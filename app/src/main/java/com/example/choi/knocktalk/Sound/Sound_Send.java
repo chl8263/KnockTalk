@@ -24,7 +24,7 @@ public class Sound_Send extends Thread{
     private static final int AudioChannel = AudioFormat.CHANNEL_OUT_STEREO;
     private static final int AudioBit = AudioFormat.ENCODING_PCM_16BIT;
     private static final int AudioMode = AudioTrack.MODE_STREAM;
-
+    private int portnumber = 9002;
     @Override
     public void run() {
         super.run();
@@ -46,7 +46,7 @@ public class Sound_Send extends Thread{
 
             while (mic) {
                 bytes_read = record.read(buffer, 0, buffer.length);
-                DatagramPacket packet = new DatagramPacket(buffer, bytes_read, InetAddress.getByName(ip), 9002);
+                DatagramPacket packet = new DatagramPacket(buffer, bytes_read, InetAddress.getByName(ip), portnumber);
                 socket.send(packet);
                 bytes_sent += bytes_read;
                 Log.e("총보낸 byte 양", String.valueOf(bytes_sent));

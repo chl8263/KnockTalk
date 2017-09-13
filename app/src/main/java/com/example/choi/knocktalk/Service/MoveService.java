@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -14,6 +15,10 @@ import android.util.Log;
 
 import com.example.choi.knocktalk.Main.MainActivity;
 import com.example.choi.knocktalk.R;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 /**
  * Created by choi on 17. 9. 13.
@@ -37,18 +42,8 @@ public class MoveService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("service", "시작중");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                    handler.sendEmptyMessage(0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
+        MOVE_RECV move_recv = new MOVE_RECV();
+        move_recv.start();
         return START_STICKY_COMPATIBILITY;
     }
 
@@ -64,7 +59,7 @@ public class MoveService extends Service {
             switch (msg.what) {
                 case 0:
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("type","1");
+                    intent.setData(Uri.parse("1"));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
@@ -86,6 +81,41 @@ public class MoveService extends Service {
             }
         }
     };
+
+    private class MOVE_RECV extends Thread {
+        private DatagramPacket packet = null;
+        private DatagramSocket socket = null;
+        byte[] data = new byte[4];
+
+        public MOVE_RECV() {
+
+        }
+
+        @Override
+        public void run() {
+            super.run();
+
+            try {
+                while (true) {
+                    socket = new DatagramSocket(10000);
+                    Log.e("MOVE", "MAKE");
+                    Log.e("MOVE", "Move Thread Wait");
+                    packet = new DatagramPacket(data, data.length);
+                    socket.receive(packet);
+                    Log.e("MOVE_RECV", "good");
+                    String msg = new String(packet.getData());//new String(packet.getData(), 0, packet.getLength());
+                    Log.e("MOVE_RECEV", msg);
+                    if (msg.equals("DECT"))
+                        handler.sendEmptyMessage(0);
+                    socket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 }
 
 

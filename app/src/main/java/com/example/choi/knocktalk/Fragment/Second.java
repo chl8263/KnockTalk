@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.example.choi.knocktalk.R;
+import com.example.choi.knocktalk.Record_Video.Record_Refresh;
 
 /**
  * Created by choi on 17. 8. 20.
@@ -23,7 +24,9 @@ public class Second extends Fragment {
     private FloatingActionButton btn;
     private RecyclerView recyclerView;
     private Animation refresh_anim;
+    private Record_Refresh record_refresh;
     public Second() {
+
     }
 
     public static Second newInstance() {
@@ -52,7 +55,8 @@ public class Second extends Fragment {
             public void onClick(View view) {
                 Log.e("secondBTN","OK");
                 btn.startAnimation(refresh_anim);
-
+                record_refresh = new Record_Refresh();
+                record_refresh.start();
             }
         });
     }

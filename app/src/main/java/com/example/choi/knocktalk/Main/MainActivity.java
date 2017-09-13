@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.choi.knocktalk.Adapter.ViewPagerAdapter;
 import com.example.choi.knocktalk.R;
@@ -18,6 +20,9 @@ import com.example.choi.knocktalk.Sound.Sound_Init;
 import com.example.choi.knocktalk.Sound.Sound_Recev;
 import com.example.choi.knocktalk.Sound.Sound_Send;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
     private Sound_Init init;//= new Sound_Init();
     private Sound_Exit exit;//= new Sound_Exit();
@@ -26,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager pager;
     private TabLayout tabLayout;
-    private int type;
+    private String type = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +39,38 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(rtspPlayView);
         setContentView(R.layout.activity_main);
 
-       // Bundle type = getIntent().getExtras();
-        //Toast.makeText(getApplicationContext(),type.getString("type"),Toast.LENGTH_SHORT).show();
+        type = getIntent().getDataString();
         initstatusbar();
         init();
         startService();
+        make_File();
+
+    }
+    private void make_File(){
+        String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String abPath = sdPath+= "/KNOCK_TALK";
+        File file= new File(abPath);
+        file.mkdirs();
+        try {
+            file.createNewFile();
+            Toast.makeText(getApplicationContext(),"성공 ",Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),"ㄴㄴ ",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    private boolean check_External_Storage_Writable(){
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state))
+            return true;
+        else return false;
+    }
+    private boolean check_External_Storage_Readable(){
+        String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state)||Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+            return true;
+        else return false;
     }
     private void startService(){
         Intent intent = new Intent(getApplicationContext(), MoveService.class);
@@ -63,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(viewPagerAdapter);
+        if(type != null) {
+            pager.setCurrentItem(2);
+        }else pager.setCurrentItem(0);
         pager.setOffscreenPageLimit(3); //viewpager 3가지를 전부 띄워놓음
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

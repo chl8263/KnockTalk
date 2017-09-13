@@ -15,6 +15,7 @@ import java.net.UnknownHostException;
 
 public class Sound_Init extends Thread{
     private String ip = "223.194.159.151";
+    private int portnumber = 9000;
     /*private String ip = "203.132.186.167";*/
     @Override
     public void run() {
@@ -29,7 +30,7 @@ public class Sound_Init extends Thread{
         try {
             Log.e("init", "init ok");
             ServerAddress = InetAddress.getByName(ip);
-            packet = new DatagramPacket(protocalBytes, protocalBytes.length, ServerAddress, 9000);
+            packet = new DatagramPacket(protocalBytes, protocalBytes.length, ServerAddress, portnumber);
             socket = new DatagramSocket();
             socket.send(packet);
             Log.e("init", "init dead");

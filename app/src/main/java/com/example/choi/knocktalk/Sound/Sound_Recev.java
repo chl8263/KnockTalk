@@ -24,11 +24,12 @@ public class Sound_Recev extends Thread {
     private DatagramPacket packet = null;
     byte[] data = new byte[1200];
     private Boolean rere = true;
+    private int portnumber = 9001;
 
     public Sound_Recev() {
         Log.e("recev_create", "good");
         try {
-            socket = new DatagramSocket(9001);
+            socket = new DatagramSocket(portnumber);
         } catch (SocketException e) {
             e.printStackTrace();
         }
