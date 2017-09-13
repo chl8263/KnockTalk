@@ -22,7 +22,7 @@ public class Sound_Recev extends Thread {
     private AudioTrack track;
     private DatagramSocket socket = null;
     private DatagramPacket packet = null;
-    byte[] input = new byte[1200];
+    byte[] data = new byte[1200];
     private Boolean rere = true;
 
     public Sound_Recev() {
@@ -40,18 +40,17 @@ public class Sound_Recev extends Thread {
     @Override
     public void run() {
         super.run();
-        Thread.currentThread().setName("RECEV THREAD");
         try {
             Log.e("받음", "ㅆasdasd");
             while (rere) {
-                packet = new DatagramPacket(input, input.length);
+                packet = new DatagramPacket(data,data.length);
                 socket.receive(packet);
                 Log.e("받음", "ㅇㅇ");
-                track.write(input, 0, input.length);
+                track.write(data, 0, data.length);
             }
             track.flush();
             track.play();
-            track.release();
+            //track.release();
             track = null;
         } catch (SocketException e) {
             e.printStackTrace();

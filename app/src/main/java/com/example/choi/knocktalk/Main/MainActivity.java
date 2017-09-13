@@ -1,5 +1,6 @@
 package com.example.choi.knocktalk.Main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import com.example.choi.knocktalk.Adapter.ViewPagerAdapter;
 import com.example.choi.knocktalk.R;
+import com.example.choi.knocktalk.Service.MoveService;
 import com.example.choi.knocktalk.Sound.Sound_Exit;
 import com.example.choi.knocktalk.Sound.Sound_Init;
 import com.example.choi.knocktalk.Sound.Sound_Recev;
@@ -24,17 +26,24 @@ public class MainActivity extends AppCompatActivity {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager pager;
     private TabLayout tabLayout;
-
+    private int type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //RtspPlayView rtspPlayView = new RtspPlayView(getApplicationContext());
         //setContentView(rtspPlayView);
         setContentView(R.layout.activity_main);
+
+       // Bundle type = getIntent().getExtras();
+        //Toast.makeText(getApplicationContext(),type.getString("type"),Toast.LENGTH_SHORT).show();
         initstatusbar();
         init();
+        startService();
     }
-
+    private void startService(){
+        Intent intent = new Intent(getApplicationContext(), MoveService.class);
+        startService(intent);
+    }
     private void initstatusbar() {
         View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

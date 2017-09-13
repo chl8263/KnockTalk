@@ -37,6 +37,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
     <android.support.design.widget.TabLayout
+        app:tabIndicatorHeight="@dimen/cardview_default_elevation"
+        app:tabIndicatorColor="@color/colorBlack"
         app:tabBackground="@color/colorPrimary"
         android:layout_weight="5.7"
         android:id="@+id/tab"

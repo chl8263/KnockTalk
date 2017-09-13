@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eff1c0"
     android:layout_height="match_parent">
-    <TextView
-        android:textColor="@color/colorBlack"
-        android:text="two"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/second_recycle"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         />
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/refreshBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:tint="@color/colorWhite"
+        app:srcCompat="@drawable/refresh" />
+</RelativeLayout>
