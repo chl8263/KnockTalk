@@ -49,7 +49,7 @@ public class FirstGridAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.griditem, parent, false);
+            convertView = inflater.inflate(R.layout.first_grid_item, parent, false);
 
             holder = new ViewHolder();
             holder.gridimg = (ImageView) convertView.findViewById(R.id.gridImg);
