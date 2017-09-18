@@ -7,12 +7,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.choi.knocktalk.Adapter.DrawerAdapter;
 import com.example.choi.knocktalk.Adapter.ViewPagerAdapter;
+import com.example.choi.knocktalk.AdapterItem.DrawerItem;
 import com.example.choi.knocktalk.R;
 import com.example.choi.knocktalk.Service.MoveService;
 import com.example.choi.knocktalk.Sound.Sound_Exit;
@@ -22,8 +29,14 @@ import com.example.choi.knocktalk.Sound.Sound_Send;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private DrawerLayout drawerLayout;
+    private ArrayList<DrawerItem> drawerItems;
+    private DrawerAdapter drawerAdapter;
+    private ListView drawlistview;
+    private ImageView drawerBtn;
     private Sound_Init init;//= new Sound_Init();
     private Sound_Exit exit;//= new Sound_Exit();
     private Sound_Send send;//= new Sound_Send();
@@ -32,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
     private TabLayout tabLayout;
     private String type = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,38 +58,43 @@ public class MainActivity extends AppCompatActivity {
         init();
         startService();
         make_File();
-
+        setDrawerLayout();
     }
-    private void make_File(){
+
+    private void make_File() {
         String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String abPath = sdPath+= "/KNOCK_TALK";
-        File file= new File(abPath);
+        String abPath = sdPath += "/KNOCK_TALK";
+        File file = new File(abPath);
         file.mkdirs();
         try {
             file.createNewFile();
-            Toast.makeText(getApplicationContext(),"성공 ",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "성공 ", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(),"ㄴㄴ ",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "ㄴㄴ ", Toast.LENGTH_SHORT).show();
         }
 
     }
-    private boolean check_External_Storage_Writable(){
+
+    private boolean check_External_Storage_Writable() {
         String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state))
+        if (Environment.MEDIA_MOUNTED.equals(state))
             return true;
         else return false;
     }
-    private boolean check_External_Storage_Readable(){
+
+    private boolean check_External_Storage_Readable() {
         String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state)||Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+        if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
             return true;
         else return false;
     }
-    private void startService(){
+
+    private void startService() {
         Intent intent = new Intent(getApplicationContext(), MoveService.class);
         startService(intent);
     }
+
     private void initstatusbar() {
         View view = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -84,6 +103,51 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().setStatusBarColor(Color.parseColor("#abbaab"));
             }
         } else getWindow().setStatusBarColor(Color.parseColor("#000"));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(drawerLayout.isDrawerOpen(Gravity.START))
+            drawerLayout.closeDrawer(Gravity.START);
+        else super.onBackPressed();
+    }
+
+    private void setDrawerLayoutButton(){
+        drawerBtn = (ImageView)findViewById(R.id.menuimg);
+        drawerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(drawlistview);
+            }
+        });
+    }
+    private void setDrawerLayout() {
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerItems = new ArrayList<DrawerItem>();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawerAdapter = new DrawerAdapter(getApplicationContext(),drawerItems);
+
+        drawerItems.add(new DrawerItem(R.drawable.settings,"설정"));
+        drawlistview = (ListView)findViewById(R.id.drawableListView);
+        drawlistview.setAdapter(drawerAdapter);
+        drawlistview.setDividerHeight(5);
+        drawlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position){
+                    case 0:
+
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+        });
+
     }
 
     private void init() {
@@ -95,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(viewPagerAdapter);
-        if(type != null) {
+        if (type != null) {
             pager.setCurrentItem(2);
-        }else pager.setCurrentItem(0);
+        } else pager.setCurrentItem(0);
         pager.setOffscreenPageLimit(3); //viewpager 3가지를 전부 띄워놓음
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -117,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
                         exit = null;
                         exit = new Sound_Exit();
                         exit.start();
-                        if (send!=null)
+                        if (send != null)
                             send.interrupt();
-                        if (recev!=null)
+                        if (recev != null)
                             recev.interrupt();
                         //send = null;//.interrupt();
                         //recev = null;//.interrupt();
@@ -130,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
                         exit = null;
                         exit = new Sound_Exit();
                         exit.start();
-                        if (send!=null)
+                        if (send != null)
                             send.interrupt();
-                        if (recev!=null)
+                        if (recev != null)
                             recev.interrupt();
                         //send = null;//.interrupt();
                         //recev = null;//.interrupt();

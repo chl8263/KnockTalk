@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -24,11 +23,9 @@ public class FingerPrintDialog extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_ACTION_BAR); //타이틀바 없애는것 지금은 안먹음
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        getWindow().setAttributes(layoutParams);
-
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        /*WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        getWindow().setAttributes(layoutParams);*/
         setContentView(R.layout.activity_fingerprint);
 
         this.setFinishOnTouchOutside(false);    //화면이외의 영역에 터치할시에 꺼지는것 방지
@@ -40,13 +37,24 @@ public class FingerPrintDialog extends AppCompatActivity{
             public void onSuccess(int moduleTag) {
                 Toast.makeText(getApplicationContext(),"성공",Toast.LENGTH_SHORT).show();
                 imageView.setColorFilter(Color.GREEN);
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         imageView.setColorFilter(Color.BLACK);
                     }
-                },2000);
-                finish();
+                },2000);*/
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(600);
+                            finish();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
 
             }
 
