@@ -1,11 +1,14 @@
 package com.example.choi.knocktalk.Main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
         startService();
         make_File();
         setDrawerLayout();
+        setDrawerLayoutButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewPagerAdapter.notifyDataSetChanged();
     }
 
     private void make_File() {
@@ -76,19 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private boolean check_External_Storage_Writable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-            return true;
-        else return false;
-    }
-
-    private boolean check_External_Storage_Readable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-            return true;
-        else return false;
-    }
+   private void Permission(){
+       if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_GRANTED)
+           else
+   }
 
     private void startService() {
         Intent intent = new Intent(getApplicationContext(), MoveService.class);
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void setDrawerLayout() {
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerItems = new ArrayList<DrawerItem>();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);

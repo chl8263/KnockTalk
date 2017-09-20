@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
  * Created by choi on 17. 9. 17.
  */
 
-public class SecondGriditem {
+public class SecondCarditem {
     private Bitmap bitmap;
     private String name;
 
-    public SecondGriditem(Bitmap bitmap, String name) {
+    public SecondCarditem(Bitmap bitmap, String name) {
         this.bitmap = bitmap;
         this.name = name;
     }

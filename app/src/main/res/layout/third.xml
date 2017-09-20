@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <!--    <com.example.choi.knocktalk.RtspPlayView
+        <!--<com.example.choi.knocktalk.RtspPlayView
             android:id="@+id/rtsp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
