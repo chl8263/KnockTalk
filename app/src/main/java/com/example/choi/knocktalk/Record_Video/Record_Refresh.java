@@ -1,6 +1,7 @@
 package com.example.choi.knocktalk.Record_Video;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
@@ -42,8 +43,8 @@ public class Record_Refresh extends Thread {
     @Override
     public void run() {
         super.run();
-        //dbManager.TOTAL_CLEAN();
-        /*Log.e("asd",dbManager.Test_Total()+" ");*/
+        /*dbManager.TOTAL_CLEAN();*/
+        Log.e("asd",dbManager.getTotal()+" ");
         try {
             Preference.setPreferances(context.getApplicationContext(), "Last_index", 0);
             Log.e("asd", "" + Preference.getPreferences(context.getApplicationContext(), "Last_index"));
@@ -123,14 +124,17 @@ public class Record_Refresh extends Thread {
                 dataInputStream.close();
                 dataOutputStream.close();
                 refresh_listener.notWork();
+                Intent intent = new Intent();
+                intent.setAction("refresh");
+                context.sendBroadcast(intent);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-        } /*catch (Exception e) {
+        } catch (Exception e) {
             Log.e("진입","Exception");
             e.printStackTrace();
-        }*/
+        }
     }
 
 }

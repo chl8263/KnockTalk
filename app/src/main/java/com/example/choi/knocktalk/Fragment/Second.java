@@ -27,6 +27,8 @@ import com.example.choi.knocktalk.SQLite.DBManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by choi on 17. 8. 20.
@@ -69,14 +71,31 @@ public class Second extends Fragment{
         file = new File(sdPath);
         File list[] = file.listFiles();
 
-        for (int i = sort_ten.size()-1; i>=0; i--) {
-            Log.e("asdadasd", String.valueOf(sort_ten.get(i)));
+        List <String> filenameList = new ArrayList<String>();
+        int j=0;
+        for(int i=0;i<list.length;i++){
+            filenameList.add(list[i].getName());
+            j++;
+            if(j==9) break;
         }
-        for (int i = sort_ten.size()-1; i>=0; i--){
+        Collections.reverse(filenameList);
+
+        for (int i = 0; i<filenameList.size(); i++){
+            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+filenameList.get(i), MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
+            secondCarditems.add(new SecondCarditem(bitmap, filenameList.get(i)));
+            Log.e("fileName",list[i].getName());
+        }
+
+        /*for (int i = sort_ten.size()-1; i>=0; i--) {
+            Log.e("asdadasd", String.valueOf(sort_ten.get(i)));
+        }*/
+        /*for (int i = sort_ten.size()-1; i>=0; i--){
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+sort_ten.get(i), MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
             secondCarditems.add(new SecondCarditem(bitmap,list[i].getName()));
             Log.e("fileName",list[i].getName());
-        }
+        }*/
+        /*Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+"2017-09-08-09-58-47.avi", MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
+        secondCarditems.add(new SecondCarditem(bitmap,sdPath+"/"+"2017-09-08-09-58-47.avi"));*/
     }
 
     @Nullable

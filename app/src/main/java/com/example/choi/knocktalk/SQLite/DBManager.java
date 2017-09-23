@@ -9,6 +9,7 @@ import com.example.choi.knocktalk.SharedPreferences.Preference;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by choi on 17. 8. 24.
@@ -67,7 +68,26 @@ public class DBManager extends SQLiteOpenHelper {
         Collections.reverse(arrayList);
         return arrayList;
     }
-
+    public String getTotal(){
+        SQLiteDatabase db = getReadableDatabase();
+        String result="";
+        Cursor cursor = db.rawQuery("select name from Total",null);
+        while (cursor.moveToNext()){
+            result+=cursor.getString(0);
+            result+=",";
+        }
+        return result;
+    }
+    public List<String> getTotalsort(){
+        SQLiteDatabase db = getReadableDatabase();
+        List<String> result = new ArrayList<String>();
+        Cursor cursor = db.rawQuery("select name from Total",null);
+        while (cursor.moveToNext()){
+            result.add(cursor.getString(0));
+        }
+        Collections.reverse(result);
+        return result;
+    }
 }
 
 

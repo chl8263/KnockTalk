@@ -1,14 +1,13 @@
 package com.example.choi.knocktalk.Main;
 
-import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -65,11 +64,6 @@ public class MainActivity extends AppCompatActivity {
         setDrawerLayoutButton();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        viewPagerAdapter.notifyDataSetChanged();
-    }
 
     private void make_File() {
         String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -86,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-   private void Permission(){
+   /*private void Permission(){
        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_GRANTED)
            else
    }
-
+*/
     private void startService() {
         Intent intent = new Intent(getApplicationContext(), MoveService.class);
         startService(intent);
@@ -149,7 +143,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals("refresh")) {
+                Toast.makeText(getApplicationContext(),"refresh",Toast.LENGTH_SHORT).show();
+                viewPagerAdapter.notifyDataSetChanged();
+                recreate();
+            }
+        }
+    };
     private void init() {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout = (TabLayout) findViewById(R.id.tab);

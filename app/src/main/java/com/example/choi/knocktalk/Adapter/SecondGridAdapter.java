@@ -79,55 +79,7 @@ public class SecondGridAdapter extends RecyclerView.Adapter<SecondGridAdapter.Vi
             }
         }
     }
-   /* private Context context;
-    private ArrayList<SecondCarditem> griditems;
 
-    public SecondGridAdapter(Context context, ArrayList<SecondCarditem> griditems) {
-        this.context = context;
-        this.griditems = griditems;
-    }
-
-    @Override
-    public int getCount() {
-        return griditems.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return griditems.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertview, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertview == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertview = inflater.inflate(R.layout.second_grid_item, parent, false);
-
-            viewHolder = new ViewHolder();
-            viewHolder.imgview = (ImageView) convertview.findViewById(R.id.Second_grid_img);
-            viewHolder.textView = (TextView) convertview.findViewById(R.id.Second_grid_name);
-
-            convertview.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertview.getTag();
-        }
-        viewHolder.imgview.setImageBitmap(griditems.get(position).getBitmap());
-        viewHolder.textView.setText(griditems.get(position).getName());
-
-        return convertview;
-    }
-
-
-    static class ViewHolder {
-        ImageView imgview;
-        TextView textView;
-*/
 }
 
 
