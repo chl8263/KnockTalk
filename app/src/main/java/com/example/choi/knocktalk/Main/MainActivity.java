@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -31,9 +30,13 @@ import com.example.choi.knocktalk.Sound.Sound_Send;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private String ip = "192.168.0.3";
     private DrawerLayout drawerLayout;
     private ArrayList<DrawerItem> drawerItems;
     private DrawerAdapter drawerAdapter;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         type = getIntent().getDataString();
+        new Start_service().start();
         initstatusbar();
         init();
         startService();
@@ -79,12 +83,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-   /*private void Permission(){
-       if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_GRANTED)
-           else
-   }
-*/
+/*
+    private void Permission(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(permissionCheck == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this,"Storage Read OK",Toast.LENGTH_SHORT).show();
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)== PackageManager.PERMISSION_GRANTED)
+            else
+    }*/
     private void startService() {
         Intent intent = new Intent(getApplicationContext(), MoveService.class);
         startService(intent);
@@ -103,34 +110,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(drawerLayout.isDrawerOpen(Gravity.START))
-            drawerLayout.closeDrawer(Gravity.START);
-        else super.onBackPressed();
+        if (drawerLayout.isDrawerVisible(drawlistview)) {
+            drawerLayout.closeDrawers();
+            Log.e("qqqqqq","qqqqqqqqq");
+        } else {
+            Log.e("qqqqqq","zzzzzzzzzzzzzzz");
+            super.onBackPressed();
+        }
     }
 
-    private void setDrawerLayoutButton(){
-        drawerBtn = (ImageView)findViewById(R.id.menuimg);
+    private void setDrawerLayoutButton() {
+        drawerBtn = (ImageView) findViewById(R.id.menuimg);
         drawerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawerLayout.openDrawer(drawlistview);
+
             }
         });
     }
+
     private void setDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerItems = new ArrayList<DrawerItem>();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        drawerAdapter = new DrawerAdapter(getApplicationContext(),drawerItems);
-
-        drawerItems.add(new DrawerItem(R.drawable.settings,"설정"));
-        drawlistview = (ListView)findViewById(R.id.drawableListView);
+        drawerAdapter = new DrawerAdapter(getApplicationContext(), drawerItems);
+//drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        drawerItems.add(new DrawerItem(R.drawable.settings, "설정"));
+        drawlistview = (ListView) findViewById(R.id.drawableListView);
         drawlistview.setAdapter(drawerAdapter);
         drawlistview.setDividerHeight(5);
         drawlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                switch (position){
+                switch (position) {
                     case 0:
 
                         break;
@@ -143,16 +156,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals("refresh")) {
-                Toast.makeText(getApplicationContext(),"refresh",Toast.LENGTH_SHORT).show();
+            if (intent.getAction().equals("refresh")) {
+                Toast.makeText(getApplicationContext(), "refresh", Toast.LENGTH_SHORT).show();
                 viewPagerAdapter.notifyDataSetChanged();
                 recreate();
             }
         }
     };
+
     private void init() {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         tabLayout = (TabLayout) findViewById(R.id.tab);
@@ -237,5 +252,31 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    private class Start_service extends Thread {
+        private DatagramPacket packet = null;
+        private DatagramSocket socket = null;
+        byte[] data = new byte[4];
+
+        public Start_service() {
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            try {
+                data = "BACK".getBytes();
+                socket = new DatagramSocket();
+                packet = new DatagramPacket(data, data.length, InetAddress.getByName(ip), 9002);
+                socket.send(packet);
+                Log.e("START_SERVICE", "good");
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

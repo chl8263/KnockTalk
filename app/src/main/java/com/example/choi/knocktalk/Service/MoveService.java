@@ -27,13 +27,12 @@ import java.net.DatagramSocket;
 public class MoveService extends Service {
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
-
+    private String ip = "192.168.0.3";
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -97,7 +96,7 @@ public class MoveService extends Service {
 
             try {
                 while (true) {
-                    socket = new DatagramSocket(10000);
+                    socket = new DatagramSocket(9006);
                     Log.e("MOVE", "MAKE");
                     Log.e("MOVE", "Move Thread Wait");
                     packet = new DatagramPacket(data, data.length);

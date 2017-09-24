@@ -1,5 +1,6 @@
 package com.example.choi.knocktalk.Fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 
 import com.example.choi.knocktalk.Adapter.SecondGridAdapter;
 import com.example.choi.knocktalk.AdapterItem.SecondCarditem;
+import com.example.choi.knocktalk.First_Dialog.DownLoad_Progress;
 import com.example.choi.knocktalk.Interface.Refresh_listener;
 import com.example.choi.knocktalk.R;
 import com.example.choi.knocktalk.Record_Video.Record_Refresh;
@@ -47,6 +49,7 @@ public class Second extends Fragment{
     private final String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/KNOCK_TALK";
 
     public Second() {
+
     }
 
     public static Second newInstance() {
@@ -66,36 +69,30 @@ public class Second extends Fragment{
 
         dbManager = new DBManager(getActivity().getApplicationContext(), "KNOCK_TALK", null, 1);
         dbManager.insert("CREATE TABLE IF NOT EXISTS TOTAL (name TEXT NOT NULL, index_number INTEGER NOT NULL);");
+        Log.e("Second___CHECKDB",dbManager.getTotal());
         ArrayList sort_ten = dbManager.getSort_Ten();
 
         file = new File(sdPath);
         File list[] = file.listFiles();
 
         List <String> filenameList = new ArrayList<String>();
-        int j=0;
-        for(int i=0;i<list.length;i++){
-            filenameList.add(list[i].getName());
-            j++;
-            if(j==9) break;
+        List <String> realList = new ArrayList<String>();
+
+        for(int i=0;i<list.length;i++) {
+            realList.add(list[i].getName());
         }
-        Collections.reverse(filenameList);
+        Collections.reverse(realList);
+        int j=0;
+        for(int i=0;i<realList.size();i++) {
+            filenameList.add(realList.get(i));
+            j++;
+            if (j == 10) break;
+        }
 
         for (int i = 0; i<filenameList.size(); i++){
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+filenameList.get(i), MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
             secondCarditems.add(new SecondCarditem(bitmap, filenameList.get(i)));
-            Log.e("fileName",list[i].getName());
         }
-
-        /*for (int i = sort_ten.size()-1; i>=0; i--) {
-            Log.e("asdadasd", String.valueOf(sort_ten.get(i)));
-        }*/
-        /*for (int i = sort_ten.size()-1; i>=0; i--){
-            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+sort_ten.get(i), MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
-            secondCarditems.add(new SecondCarditem(bitmap,list[i].getName()));
-            Log.e("fileName",list[i].getName());
-        }*/
-        /*Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+"2017-09-08-09-58-47.avi", MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
-        secondCarditems.add(new SecondCarditem(bitmap,sdPath+"/"+"2017-09-08-09-58-47.avi"));*/
     }
 
     @Nullable
@@ -122,8 +119,21 @@ public class Second extends Fragment{
             public void onClick(View view) {
                 Log.e("secondBTN", "OK");
                 refreshbtn.startAnimation(refresh_anim);
+                Intent intent = new Intent(view.getContext().getApplicationContext(), DownLoad_Progress.class);
+                view.getContext().startActivity(intent);
                 record_refresh = new Record_Refresh(getContext(),refresh_listener);
                 record_refresh.start();
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy>0 && refreshbtn.getVisibility()==View.VISIBLE){
+                    refreshbtn.hide();
+                }else if(dy<0 && refreshbtn.getVisibility()!=View.VISIBLE){
+                    refreshbtn.show();
+                }
             }
         });
     }
@@ -131,7 +141,7 @@ public class Second extends Fragment{
         @Override
         public void dowork() {
             Log.e("call","back");
-
+            secondGridAdapter.notify();
         }
 
         @Override

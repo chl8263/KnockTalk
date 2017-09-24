@@ -18,8 +18,7 @@ import java.net.UnknownHostException;
  */
 
 public class Sound_Send extends Thread{
-    private String ip = "223.194.159.151";
-    /*private String ip = "203.132.186.167";*/
+    private String ip = "192.168.0.2";
     private static final int AudioSampleRate = 44100;
     private static final int AudioChannel = AudioFormat.CHANNEL_OUT_STEREO;
     private static final int AudioBit = AudioFormat.ENCODING_PCM_16BIT;
@@ -28,7 +27,6 @@ public class Sound_Send extends Thread{
     @Override
     public void run() {
         super.run();
-        Thread.currentThread().setName("SEND THREAD");
         boolean mic = true;
         Log.e("보냄시작", "ㅇㅇ" + Thread.currentThread().getName());
         AudioRecord record = new AudioRecord(MediaRecorder.AudioSource.MIC, AudioSampleRate, AudioChannel, AudioBit, AudioRecord.getMinBufferSize(AudioSampleRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT) * 5);

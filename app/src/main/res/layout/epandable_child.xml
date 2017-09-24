@@ -14,14 +14,13 @@
         android:gravity="left|center"
         android:paddingLeft="40dp"
         android:text="child"
-        android:textSize="30dp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/child_btn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:paddingLeft="120dp"
-        app:srcCompat="@drawable/first_ok" />
+        android:layout_weight="4"
+        />
 </LinearLayout>

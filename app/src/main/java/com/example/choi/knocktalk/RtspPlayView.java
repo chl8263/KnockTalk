@@ -15,7 +15,7 @@ public class RtspPlayView extends SurfaceView implements SurfaceHolder.Callback 
     private Thread th;
     //private String uri="rtsp://113.198.84.52:80/test1";
     //private String uri = "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4";
-    private String uri = "rtsp://192.168.0.2:8090/test";
+    private String uri = "rtsp://192.168.0.3:8091/test1";
 
     public RtspPlayView(Context context) {
         super(context);

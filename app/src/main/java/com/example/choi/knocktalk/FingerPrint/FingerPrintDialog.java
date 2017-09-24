@@ -30,7 +30,7 @@ public class FingerPrintDialog extends AppCompatActivity{
 
         this.setFinishOnTouchOutside(false);    //화면이외의 영역에 터치할시에 꺼지는것 방지
         imageView = (ImageView)findViewById(R.id.fingerImage);
-        imageView.setColorFilter(Color.RED);
+        imageView.setColorFilter(Color.BLACK);
         Reprint.initialize(getApplicationContext());
         Reprint.authenticate(new AuthenticationListener() {
             @Override

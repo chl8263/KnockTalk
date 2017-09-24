@@ -1,6 +1,7 @@
 package com.example.choi.knocktalk.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.choi.knocktalk.First_Dialog.First_NOT_DIalog;
+import com.example.choi.knocktalk.First_Dialog.First_OK_Dialog;
 import com.example.choi.knocktalk.R;
 
 import java.util.ArrayList;
@@ -21,11 +24,13 @@ import java.util.List;
 public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int HEADER = 0;
     public static final int CHILD = 1;
-
+    private final int EXISTENCE=3;
+    private final int NONEXISTENCE=4;
     private List<Item> data;
-
-    public First_ExpandableApater(List<Item> data) {
+    private Context context;
+    public First_ExpandableApater(List<Item> data,Context context) {
         this.data = data;
+        this.context = context;
     }
 
     @Override
@@ -99,19 +104,27 @@ public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.Vi
             case CHILD:
                 final ListChildViewHolder itemChild_Controller = (ListChildViewHolder) holder;
                 itemChild_Controller.textView.setText(data.get(position).text);
-                if (data.get(position).i==0){
+                if (data.get(position).i==NONEXISTENCE){
                     itemChild_Controller.imageView.setImageResource(R.drawable.first_not);
-                }else if(data.get(position).i==1){
+                }else if(data.get(position).i==EXISTENCE){
                     itemChild_Controller.imageView.setImageResource(R.drawable.first_ok);
                 }
                 itemChild_Controller.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (data.get(position).i==0) {
+                        if (data.get(position).i==NONEXISTENCE) {
                             Log.e("asd", (String) itemChild_Controller.textView.getText()+"not");
+                            Intent intent =new Intent(context.getApplicationContext(), First_NOT_DIalog.class);
+                            intent.putExtra("name",(String) itemChild_Controller.textView.getText());
+                            view.getContext().startActivity(intent);
                         }
-                        else if (data.get(position).i==1) {
+                        else if (data.get(position).i==EXISTENCE) {
                             Log.e("asd", (String) itemChild_Controller.textView.getText()+"OK");
+                            Intent intent =new Intent(context.getApplicationContext(), First_OK_Dialog.class);
+                            intent.putExtra("name",(String) itemChild_Controller.textView.getText());
+                            view.getContext().startActivity(intent);
+                           /*Intent intent = new Intent(context.getApplicationContext(), DownLoad_Progress.class);
+                            view.getContext().startActivity(intent);*/
                         }
                         //Log.e("asd", (String) itemChild_Controller.textView.getText()); //child 의 text 가져온다
                     }

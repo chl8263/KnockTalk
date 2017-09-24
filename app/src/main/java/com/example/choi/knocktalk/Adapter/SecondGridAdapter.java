@@ -50,9 +50,6 @@ public class SecondGridAdapter extends RecyclerView.Adapter<SecondGridAdapter.Vi
         return griditems.size();
     }
 
-    public void setAnimation(View viewToAnimation, int position) {
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ImageView imageView;
