@@ -2,24 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_width="250dp"
+    android:layout_height="80dp">
     <ImageView
-        android:paddingLeft="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="120dp"
-        android:layout_gravity="left|center"
-        android:layout_weight="1"
+        android:padding="15dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="5dp"
+        app:srcCompat="@drawable/first_ok"
+        android:layout_weight="3"
         android:id="@+id/drawImg"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         />
-
     <TextView
+        android:padding="15dp"
+        android:text="asd"
         android:paddingRight="30dp"
-        android:textSize="30sp"
-        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        android:textColor="@color/colorWhite"
         android:gravity="right|center"
         android:layout_weight="1"
         android:id="@+id/drawName"

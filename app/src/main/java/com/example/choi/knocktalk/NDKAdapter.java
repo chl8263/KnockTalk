@@ -5,12 +5,15 @@ package com.example.choi.knocktalk;
  */
 
 public class NDKAdapter {
-    public NDKAdapter(){
+    public NDKAdapter() {
     }
-    static{
+
+    static {
         System.loadLibrary("VideoPlayer");
     }
+
     public static native void setDataSource(String uri);
+
     public static native int play(Object surface);
 
 }

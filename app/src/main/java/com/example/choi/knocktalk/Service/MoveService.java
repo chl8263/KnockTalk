@@ -27,12 +27,14 @@ import java.net.DatagramSocket;
 public class MoveService extends Service {
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
-    private String ip = "192.168.0.3";
+    private String ip = "192.168.0.2";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -68,8 +70,6 @@ public class MoveService extends Service {
                             .setContentText("수상한움직임 발견....!!")
                             .setDefaults(Notification.DEFAULT_VIBRATE)// 수신 알람 적용
                             .setAutoCancel(true) //알림바에서 자동 삭제
-                            //.addAction(R.drawable.noti_cancel, "취소",pi) //버튼 추가하기
-                            //.addAction(R.drawable.noti_ok, "확인하기", pi)
                             .setContentIntent(pi)
                     ;
 
@@ -102,7 +102,7 @@ public class MoveService extends Service {
                     packet = new DatagramPacket(data, data.length);
                     socket.receive(packet);
                     Log.e("MOVE_RECV", "good");
-                    String msg = new String(packet.getData());//new String(packet.getData(), 0, packet.getLength());
+                    String msg = new String(packet.getData());
                     Log.e("MOVE_RECEV", msg);
                     if (msg.equals("DECT"))
                         handler.sendEmptyMessage(0);
@@ -110,7 +110,7 @@ public class MoveService extends Service {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -30,109 +30,116 @@ public class DBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //db.execSQL("CREATE TABLE firstgrid (URI String, position INTEGER);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
 
     }
-    public void insert(String _query){
+
+    public void insert(String _query) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(_query);
         db.close();
     }
-    public void update(String _query){
+
+    public void update(String _query) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(_query);
         db.close();
     }
+
     public void delete(String _query) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(_query);
         db.close();
     }
 
-    public ArrayList getSort_Ten(){
+    public ArrayList getSort_Ten() {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList arrayList = new ArrayList<String>();
-        int count=0;
+        int count = 0;
 
-        for(int i=Preference.getPreferences(context.getApplicationContext(),"Last_index");i>0;i--){
+        for (int i = Preference.getPreferences(context.getApplicationContext(), "Last_index"); i > 0; i--) {
             String name = null;
-            Cursor cursor = db.rawQuery("select name from TOTAL where index_number="+i+"",null);
+            Cursor cursor = db.rawQuery("select name from TOTAL where index_number=" + i + "", null);
             if (cursor.moveToFirst()) {
                 name = cursor.getString(0);
             }
             count++;
-            if (count==9) break;
+            if (count == 9) break;
             arrayList.add(name);
         }
 
         Collections.reverse(arrayList);
         return arrayList;
     }
-    public int getIndex(String name){
+
+    public int getIndex(String name) {
         int index = 0;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select index_number from TOTAL where name='"+name+"'",null);
+        Cursor cursor = db.rawQuery("select index_number from TOTAL where name='" + name + "'", null);
         if (cursor.moveToFirst()) {
             index = cursor.getInt(0);
         }
         return index;
     }
 
-    public String getname(int index){
+    public String getname(int index) {
         String result = new String();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select name from TOTAL where index_number='"+index+"'",null);
+        Cursor cursor = db.rawQuery("select name from TOTAL where index_number='" + index + "'", null);
         if (cursor.moveToFirst()) {
             result = cursor.getString(0);
         }
         return result;
     }
-    public String getTotal(){
+
+    public String getTotal() {
         SQLiteDatabase db = getReadableDatabase();
-        String result="";
-        Cursor cursor = db.rawQuery("select name from Total",null);
-        while (cursor.moveToNext()){
-            result+=cursor.getString(0);
-            result+=",";
+        String result = "";
+        Cursor cursor = db.rawQuery("select name from Total", null);
+        while (cursor.moveToNext()) {
+            result += cursor.getString(0);
+            result += ",";
         }
         return result;
     }
-    public List<String> getTotalsort(){
+
+    public List<String> getTotalsort() {
         SQLiteDatabase db = getReadableDatabase();
         List<String> result = new ArrayList<String>();
-        Cursor cursor = db.rawQuery("select name from Total",null);
-        while (cursor.moveToNext()){
+        Cursor cursor = db.rawQuery("select name from Total", null);
+        while (cursor.moveToNext()) {
             result.add(cursor.getString(0));
         }
         Collections.reverse(result);
         return result;
     }
-    public List<String> getTotalsort_Ten(){
+
+    public List<String> getTotalsort_Ten() {
         SQLiteDatabase db = getReadableDatabase();
         List<String> result = new ArrayList<String>();
         List<String> result_ten = new ArrayList<String>();
-        Cursor cursor = db.rawQuery("select name from Total",null);
-        while (cursor.moveToNext()){
+        Cursor cursor = db.rawQuery("select name from Total", null);
+        while (cursor.moveToNext()) {
             result.add(cursor.getString(0));
         }
         Collections.reverse(result);
 
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             result_ten.add(result.get(i));
         }
         return result_ten;
     }
-    public List<String> getTotalsort_Ten_Real(){
+
+    public List<String> getTotalsort_Ten_Real() {
         List<String> ten = getTotalsort_Ten();
         List<String> result = new ArrayList<String>();
         List<String> result_real = new ArrayList<String>();
         File file = new File(sdPath);
         File list[] = file.listFiles();
-        for(int i =0; i<list.length;i++){
+        for (int i = 0; i < list.length; i++) {
             String split[] = list[i].getName().split("\\.");
             result.add(split[0]);
         }
@@ -144,41 +151,41 @@ public class DBManager extends SQLiteOpenHelper {
         ten.removeAll(result);
         return ten;
     }
-    public int getMaxIndex(){
+
+    public int getMaxIndex() {
         List<Integer> index = new ArrayList<Integer>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select index_number from TOTAL",null);
-        while (cursor.moveToNext()){
+        Cursor cursor = db.rawQuery("select index_number from TOTAL", null);
+        while (cursor.moveToNext()) {
             index.add(cursor.getInt(0));
         }
         Collections.reverse(index);
         return index.get(0);
     }
-    public List<Integer> getTen__REEEEEEEEAL(int last,int first){
+
+    public List<Integer> getTen__REEEEEEEEAL(int last, int first) {
         File file = new File(sdPath);
         File list[] = file.listFiles();
-        int maxindex = getMaxIndex();
+        int maxindex = Preference.getPreferences(context.getApplicationContext(), "Last_index");
         List<String> list_clone = new ArrayList<String>();
         List<Integer> result = new ArrayList<Integer>();
-        for(int i=0;i<list.length;i++){ //저장된 동영상의 이름
+        for (int i = 0; i < list.length; i++) { //저장된 동영상의 이름
             String split[] = list[i].getName().split("\\.");
             list_clone.add(split[0]);
         }
-        List<String> db_extence = new ArrayList<String>(); //현재 db에 저장되어 있는 이름
-        for(int i=first;i<maxindex;i++){ //저장된 동영상의 이름
-            db_extence.add(getname(i));
+        for (int i = first; i <= maxindex; i++) {
+            String name = getname(i);
+            if (!(list_clone.contains(name)))
+                result.add(i);
         }
-        for(int i=0;i<db_extence.size();i++){
-            if(!db_extence.get(i).contains((CharSequence) list_clone))
-                result.add(getIndex(db_extence.get(i)));
-        }
-        for(int i=maxindex+1;i<=last;i++){
+        for (int i = maxindex + 1; i <= last; i++) {
             result.add(i);
         }
         return result;
     }
-    public void delectDB (){
-        SQLiteDatabase db =getWritableDatabase();
+
+    public void delectDB() {
+        SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE from TOTAL");
     }
 }

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.choi.knocktalk.AdapterItem.SecondCarditem;
 import com.example.choi.knocktalk.R;
@@ -25,7 +24,8 @@ public class SecondGridAdapter extends RecyclerView.Adapter<SecondGridAdapter.Vi
     private final Context context;
     private ArrayList<SecondCarditem> griditems;
     private ViewHolder holder;
-    private final String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/KNOCK_TALK";
+    private final String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/KNOCK_TALK";
+
     public SecondGridAdapter(Context context, ArrayList<SecondCarditem> griditems) {
         this.context = context;
         this.griditems = griditems;
@@ -51,7 +51,7 @@ public class SecondGridAdapter extends RecyclerView.Adapter<SecondGridAdapter.Vi
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imageView;
         public TextView textView;
 
@@ -61,22 +61,21 @@ public class SecondGridAdapter extends RecyclerView.Adapter<SecondGridAdapter.Vi
             imageView.setOnClickListener(this);
             textView = (TextView) view.findViewById(R.id.Second_grid_name);
         }
+
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.Second_grid_img:
                     int position = getAdapterPosition();
-                    Toast.makeText(view.getContext(),""+position,Toast.LENGTH_SHORT).show();
                     /*Intent intent = new Intent(view.getContext(), FingerPrintDialog.class);*/
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri.parse(sdPath+"/"+ griditems.get(position).getName());
-                    intent.setDataAndType(uri,"video/*");
+                    Uri uri = Uri.parse(sdPath + "/" + griditems.get(position).getName() + ".avi");
+                    intent.setDataAndType(uri, "video/*");
                     view.getContext().startActivity(intent);
                     break;
             }
         }
     }
-
 }
 
 

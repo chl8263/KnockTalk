@@ -51,11 +51,12 @@
         android:layout_height="match_parent"
         />
 </LinearLayout>
+
     <ListView
         android:background="@color/colorPrimary"
         android:layout_gravity="start"
         android:id="@+id/drawableListView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_width="250dp"
         />
     </android.support.v4.widget.DrawerLayout>

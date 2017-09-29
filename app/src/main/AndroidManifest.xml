@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -15,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Main.MainActivity"
+            android:name=".Loading.LoadingActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,20 +25,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity
+        <activity
             android:name=".Main.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />-->
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".FingerPrint.FingerPrintDialog"
             android:theme="@style/Theme.AppCompat.Dialog"
             />
-        <activity android:name=".First_Dialog.First_OK_Dialog"
+        <activity android:name=".Dialog.First_OK_Dialog"
             android:theme="@style/Theme.AppCompat.Dialog"
             />
-        <activity android:name=".First_Dialog.First_NOT_DIalog"
+        <activity android:name=".Dialog.First_NOT_DIalog"
             android:theme="@style/Theme.AppCompat.Dialog"
             />
-        <activity android:name=".First_Dialog.DownLoad_Progress"
+        <activity android:name=".Dialog.Police_dialog"
             android:theme="@style/Theme.AppCompat.Dialog"
+            />
+        <activity android:name=".Dialog.DownLoad_Progress"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            />
+        <activity android:name=".Setting_Dialog.Lock_style_dialog"
+            android:theme="@style/Theme.AppCompat.Dialog"
+
+            />
+        <activity android:name=".Setting.PassWordActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            />
+        <activity android:name=".Setting.SettingActivity"
+            android:parentActivityName=".Main.MainActivity"
+            />
+        <activity android:name=".Setting.Set_password"
             />
         <service android:name=".Service.MoveService"/>
     </application>

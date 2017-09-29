@@ -1,7 +1,6 @@
-package com.example.choi.knocktalk.First_Dialog;
+package com.example.choi.knocktalk.Dialog;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -11,22 +10,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.choi.knocktalk.File_Refresh.FileOne_Request;
 import com.example.choi.knocktalk.R;
 
 /**
  * Created by choi on 17. 9. 24.
  */
 
-public class First_OK_Dialog extends AppCompatActivity implements View.OnClickListener{
+public class First_NOT_DIalog extends AppCompatActivity implements View.OnClickListener{
     private TextView name;
     private Button ok,not;
     private String filename;
     private final String sdPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/KNOCK_TALK";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.first_ok);
+        setContentView(R.layout.first_not);
         setFinishOnTouchOutside(false);
 
         Intent intent = getIntent();
@@ -43,10 +44,11 @@ public class First_OK_Dialog extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.ok_btn:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse(sdPath+"/"+filename);
-                intent.setDataAndType(uri,"video/*");
-                view.getContext().startActivity(intent);
+                Intent intent = new Intent(view.getContext(),DownLoad_Progress.class);
+                intent.putExtra("download","one");
+                startActivity(intent);
+                FileOne_Request fileOne_request = new FileOne_Request(getApplicationContext(),filename);
+                fileOne_request.start();
                 finish();
                 break;
             case R.id.cancle_btn:

@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.choi.knocktalk.First_Dialog.First_NOT_DIalog;
-import com.example.choi.knocktalk.First_Dialog.First_OK_Dialog;
+import com.example.choi.knocktalk.Dialog.First_NOT_DIalog;
+import com.example.choi.knocktalk.Dialog.First_OK_Dialog;
 import com.example.choi.knocktalk.R;
 
 import java.util.ArrayList;
@@ -36,9 +36,6 @@ public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {    //ViewHolder 를 생성해주는것 viewtype 이 하나 이상이라면 하나 이상이 생성된다
         View view = null;
-       /* float dp = parent.getContext().getResources().getDisplayMetrics().density;  //px와 dp간의 비율,코드상에서 화면 UI 나 크기를 정할 필요가 있다면 단말별로 DPI를 맞게 설정해준다
-        int subItemPaddingLeft = (int) (18 * dp);
-        int subItemPaddingTopAndBottom = (int) (5 * dp);*/
         switch (viewType) {
             case HEADER:
                 LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,13 +46,6 @@ public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.Vi
                 LayoutInflater inflater_child = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater_child.inflate(R.layout.epandable_child, parent, false);
                 ListChildViewHolder child = new ListChildViewHolder(view);
-               /* TextView itemTextView = new TextView(parent.getContext());
-                itemTextView.setPadding(subItemPaddingLeft, subItemPaddingTopAndBottom, 0, subItemPaddingTopAndBottom);
-                itemTextView.setTextColor(0x88000000);
-                itemTextView.setLayoutParams(
-                        new ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));*/
                 return child;
         }
         return null;
@@ -105,9 +95,9 @@ public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.Vi
                 final ListChildViewHolder itemChild_Controller = (ListChildViewHolder) holder;
                 itemChild_Controller.textView.setText(data.get(position).text);
                 if (data.get(position).i==NONEXISTENCE){
-                    itemChild_Controller.imageView.setImageResource(R.drawable.first_not);
+                    itemChild_Controller.imageView.setImageResource(R.drawable.no_video);
                 }else if(data.get(position).i==EXISTENCE){
-                    itemChild_Controller.imageView.setImageResource(R.drawable.first_ok);
+                    itemChild_Controller.imageView.setImageResource(R.drawable.video_ok);
                 }
                 itemChild_Controller.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -123,14 +113,9 @@ public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.Vi
                             Intent intent =new Intent(context.getApplicationContext(), First_OK_Dialog.class);
                             intent.putExtra("name",(String) itemChild_Controller.textView.getText());
                             view.getContext().startActivity(intent);
-                           /*Intent intent = new Intent(context.getApplicationContext(), DownLoad_Progress.class);
-                            view.getContext().startActivity(intent);*/
                         }
-                        //Log.e("asd", (String) itemChild_Controller.textView.getText()); //child 의 text 가져온다
                     }
                 });
-                /*TextView itemTextView = (TextView) holder.itemView;
-                itemTextView.setText(data.get(position).text);*/
                 break;
         }
     }
@@ -189,4 +174,8 @@ public class First_ExpandableApater extends RecyclerView.Adapter<RecyclerView.Vi
             this.i=i;
         }
     }
+    public void rere(){
+        notifyDataSetChanged();
+    }
+
 }

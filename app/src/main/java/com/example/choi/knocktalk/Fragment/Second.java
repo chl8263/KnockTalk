@@ -1,6 +1,5 @@
 package com.example.choi.knocktalk.Fragment;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
@@ -21,8 +20,6 @@ import android.widget.RelativeLayout;
 
 import com.example.choi.knocktalk.Adapter.SecondGridAdapter;
 import com.example.choi.knocktalk.AdapterItem.SecondCarditem;
-import com.example.choi.knocktalk.First_Dialog.DownLoad_Progress;
-import com.example.choi.knocktalk.Interface.Refresh_listener;
 import com.example.choi.knocktalk.R;
 import com.example.choi.knocktalk.Record_Video.Record_Refresh;
 import com.example.choi.knocktalk.SQLite.DBManager;
@@ -36,7 +33,7 @@ import java.util.List;
  * Created by choi on 17. 8. 20.
  */
 
-public class Second extends Fragment{
+public class Second extends Fragment {
     private FloatingActionButton refreshbtn;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -67,31 +64,32 @@ public class Second extends Fragment{
 
         secondCarditems = new ArrayList<SecondCarditem>();
 
-        dbManager = new DBManager(getActivity().getApplicationContext(), "KNOCK_TALK", null, 1);
-        dbManager.insert("CREATE TABLE IF NOT EXISTS TOTAL (name TEXT NOT NULL, index_number INTEGER NOT NULL);");
-        Log.e("Second___CHECKDB",dbManager.getTotal());
-        ArrayList sort_ten = dbManager.getSort_Ten();
-
         file = new File(sdPath);
         File list[] = file.listFiles();
 
-        List <String> filenameList = new ArrayList<String>();
-        List <String> realList = new ArrayList<String>();
+        List<String> filenameList = new ArrayList<String>();
+        List<String> realList = new ArrayList<String>();
 
-        for(int i=0;i<list.length;i++) {
+        for (int i = 0; i < list.length; i++) {
             realList.add(list[i].getName());
         }
         Collections.reverse(realList);
-        int j=0;
-        for(int i=0;i<realList.size();i++) {
+        for (int i = 0; i < realList.size(); i++) {
+            Log.e("REAL_LIST", realList.get(i) + "  ");
+        }
+
+        int j = 0;
+        for (int i = 0; i < realList.size(); i++) {
             filenameList.add(realList.get(i));
             j++;
             if (j == 10) break;
         }
+        Collections.reverse(filenameList);
 
-        for (int i = 0; i<filenameList.size(); i++){
-            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath+"/"+filenameList.get(i), MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
-            secondCarditems.add(new SecondCarditem(bitmap, filenameList.get(i)));
+        for (int i = 0; i < filenameList.size(); i++) {
+            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(sdPath + "/" + filenameList.get(i), MediaStore.Images.Thumbnails.FULL_SCREEN_KIND); //sercer에서 이름이 어떻게 넘어오는지 알아야 함
+            String name[] = filenameList.get(i).split("\\.");
+            secondCarditems.add(new SecondCarditem(bitmap, name[0]));
         }
     }
 
@@ -119,9 +117,7 @@ public class Second extends Fragment{
             public void onClick(View view) {
                 Log.e("secondBTN", "OK");
                 refreshbtn.startAnimation(refresh_anim);
-                Intent intent = new Intent(view.getContext().getApplicationContext(), DownLoad_Progress.class);
-                view.getContext().startActivity(intent);
-                record_refresh = new Record_Refresh(getContext(),refresh_listener);
+                record_refresh = new Record_Refresh(getContext());
                 record_refresh.start();
             }
         });
@@ -129,42 +125,13 @@ public class Second extends Fragment{
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy>0 && refreshbtn.getVisibility()==View.VISIBLE){
+                if (dy > 0 && refreshbtn.getVisibility() == View.VISIBLE) {
                     refreshbtn.hide();
-                }else if(dy<0 && refreshbtn.getVisibility()!=View.VISIBLE){
+                } else if (dy < 0 && refreshbtn.getVisibility() != View.VISIBLE) {
                     refreshbtn.show();
                 }
             }
         });
     }
-    Refresh_listener refresh_listener = new Refresh_listener() {
-        @Override
-        public void dowork() {
-            Log.e("call","back");
-            secondGridAdapter.notify();
-        }
-
-        @Override
-        public void notWork() {
-            Log.e("callBAck","notwork");
-        }
-    };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

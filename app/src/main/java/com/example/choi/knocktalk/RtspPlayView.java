@@ -13,9 +13,7 @@ public class RtspPlayView extends SurfaceView implements SurfaceHolder.Callback 
     private SurfaceHolder holder;
     private NDKAdapter adapter;
     private Thread th;
-    //private String uri="rtsp://113.198.84.52:80/test1";
-    //private String uri = "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4";
-    private String uri = "rtsp://192.168.0.3:8091/test1";
+    private String uri = "rtsp://192.168.0.2:8091/test1";
 
     public RtspPlayView(Context context) {
         super(context);
@@ -40,7 +38,7 @@ public class RtspPlayView extends SurfaceView implements SurfaceHolder.Callback 
             public void run() {
                 try {
                     adapter.play(holder.getSurface());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -48,6 +46,7 @@ public class RtspPlayView extends SurfaceView implements SurfaceHolder.Callback 
         });
         th.start();
     }
+
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
 

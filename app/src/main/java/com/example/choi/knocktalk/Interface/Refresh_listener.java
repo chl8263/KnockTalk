@@ -7,4 +7,8 @@ package com.example.choi.knocktalk.Interface;
 public interface Refresh_listener {
     void dowork();
     void notWork();
+    void mic_stop();
+    void mic_go();
+
+
 }

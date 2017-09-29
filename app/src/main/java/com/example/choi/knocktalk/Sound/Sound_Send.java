@@ -17,13 +17,15 @@ import java.net.UnknownHostException;
  * Created by choi on 17. 8. 20.
  */
 
-public class Sound_Send extends Thread{
+public class Sound_Send extends Thread {
     private String ip = "192.168.0.2";
     private static final int AudioSampleRate = 44100;
     private static final int AudioChannel = AudioFormat.CHANNEL_OUT_STEREO;
     private static final int AudioBit = AudioFormat.ENCODING_PCM_16BIT;
     private static final int AudioMode = AudioTrack.MODE_STREAM;
     private int portnumber = 9002;
+    DatagramSocket socket = null;
+
     @Override
     public void run() {
         super.run();
@@ -35,7 +37,7 @@ public class Sound_Send extends Thread{
         byte buffer[] = new byte[3528 * 5];
         try {
             Log.e("보냄성공!", "오짐");
-            DatagramSocket socket = new DatagramSocket();
+            socket = new DatagramSocket();
             if (record.getState() == AudioRecord.STATE_INITIALIZED) {
                 record.startRecording();
             } else {
@@ -58,12 +60,24 @@ public class Sound_Send extends Thread{
             return;
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Log.e("Send Thread Interrupt", "Interrupt Complete");
+            record.stop();
+            record.release();
+            socket.close();
             mic = false;
         } catch (UnknownHostException e) {
             e.printStackTrace();
+            record.stop();
+            record.release();
+            socket.disconnect();
+            socket.close();
             mic = false;
         } catch (SocketException e) {
             e.printStackTrace();
+            record.stop();
+            record.release();
+            socket.disconnect();
+            socket.close();
             mic = false;
         } catch (IOException e) {
             e.printStackTrace();

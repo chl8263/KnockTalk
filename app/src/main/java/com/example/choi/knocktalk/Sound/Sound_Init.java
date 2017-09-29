@@ -13,10 +13,10 @@ import java.net.UnknownHostException;
  * Created by choi on 17. 8. 20.
  */
 
-public class Sound_Init extends Thread{
+public class Sound_Init extends Thread {
     private String ip = "192.168.0.2";
     private int portnumber = 9000;
-    /*private String ip = "203.132.186.167";*/
+
     @Override
     public void run() {
         super.run();
