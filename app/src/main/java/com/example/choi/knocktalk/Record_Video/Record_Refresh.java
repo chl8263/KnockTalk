@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.choi.knocktalk.Dialog.DownLoad_Progress;
 import com.example.choi.knocktalk.SQLite.DBManager;
 import com.example.choi.knocktalk.SharedPreferences.Preference;
+import com.example.choi.knocktalk.Util.Contact;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class Record_Refresh extends Thread {
     private int portnumber = 9004;
-    private String ip = "192.168.0.2";
+    private String ip = Contact.ip_address;
     private Socket socket = null;
     private FileOutputStream fileOutputStream;
     private DataInputStream dataInputStream;

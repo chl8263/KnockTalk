@@ -2,6 +2,8 @@ package com.example.choi.knocktalk.Sound;
 
 import android.util.Log;
 
+import com.example.choi.knocktalk.Util.Contact;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,7 +16,7 @@ import java.net.UnknownHostException;
  */
 
 public class Sound_Init extends Thread {
-    private String ip = "192.168.0.2";
+    private String ip = Contact.ip_address;
     private int portnumber = 9000;
 
     @Override

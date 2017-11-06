@@ -6,6 +6,8 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import com.example.choi.knocktalk.Util.Contact;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -18,7 +20,7 @@ import java.net.UnknownHostException;
  */
 
 public class Sound_Send extends Thread {
-    private String ip = "192.168.0.2";
+    private String ip = Contact.ip_address;
     private static final int AudioSampleRate = 44100;
     private static final int AudioChannel = AudioFormat.CHANNEL_OUT_STEREO;
     private static final int AudioBit = AudioFormat.ENCODING_PCM_16BIT;

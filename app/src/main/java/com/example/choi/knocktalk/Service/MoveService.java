@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.example.choi.knocktalk.Main.MainActivity;
 import com.example.choi.knocktalk.R;
+import com.example.choi.knocktalk.Util.Contact;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -27,7 +28,7 @@ import java.net.DatagramSocket;
 public class MoveService extends Service {
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
-    private String ip = "192.168.0.2";
+    private String ip = Contact.ip_address;
 
     @Nullable
     @Override

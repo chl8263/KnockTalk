@@ -29,6 +29,7 @@ import com.example.choi.knocktalk.Sound.Sound_Exit;
 import com.example.choi.knocktalk.Sound.Sound_Init;
 import com.example.choi.knocktalk.Sound.Sound_Recev;
 import com.example.choi.knocktalk.Sound.Sound_Send;
+import com.example.choi.knocktalk.Util.Contact;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 import static com.example.choi.knocktalk.R.id.tab;
 
 public class MainActivity extends AppCompatActivity {
-    private String ip = "192.168.0.3";
+    private String ip = Contact.ip_address;
     private DrawerLayout drawerLayout;
     private ArrayList<DrawerItem> drawerItems;
     private DrawerAdapter drawerAdapter;

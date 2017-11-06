@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.choi.knocktalk.SQLite.DBManager;
 import com.example.choi.knocktalk.SharedPreferences.Preference;
+import com.example.choi.knocktalk.Util.Contact;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,7 +18,7 @@ import java.net.Socket;
 
 public class AllFileName_request extends Thread {
     private int portnumber = 9004;
-    private String ip = "192.168.0.2";
+    private String ip = Contact.ip_address;
     private Socket socket = null;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;

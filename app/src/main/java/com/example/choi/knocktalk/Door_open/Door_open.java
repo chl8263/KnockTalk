@@ -1,5 +1,7 @@
 package com.example.choi.knocktalk.Door_open;
 
+import com.example.choi.knocktalk.Util.Contact;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -12,7 +14,7 @@ import java.net.UnknownHostException;
  */
 
 public class Door_open extends Thread {
-    private String ip = "192.168.0.2";
+    private String ip = Contact.ip_address;
     private int portnumber = 9000;
     @Override
     public void run() {
